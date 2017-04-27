@@ -1,0 +1,35 @@
+{
+  "name": "electron-angular",
+  "version": "1.0.0",
+  "license": "MIT",
+  "author": "Christian Senk <mail@csenk.de>",
+  "description": "Electron seed/starter with angular used as renderer-framework. Features: Linting, Testing (unit/e2e), separated code bases (main/renderer).",
+  "main": "main.js",
+  "scripts": {
+    "start": "npm run build && concurrently -k 'npm run start:renderer-app' 'sleep 5 && electron dist/'",
+    "start:renderer-app": "cd renderer-app && npm run start",
+    "build": "npm run clean && tsc && cpx package.json dist/ && cpx src/build/* dist/build/ && npm run build:renderer-app && cpx 'renderer-app/dist/*.*' dist/renderer-app",
+    "build:production": "npm run clean && tsc && cpx package.json dist/ && cpx src/build/* dist/build/ && npm run build:renderer-app:production && cpx 'renderer-app/dist/*.*' dist/renderer-app",
+    "build:renderer-app": "cd renderer-app && npm run build",
+    "build:renderer-app:production": "cd renderer-app && npm run build:production",
+    "test:e2e": "npm run build && jasmine JASMINE_CONFIG_PATH=jasmine.json",
+    "clean": "rimraf dist/",
+    "package": "npm run build:production && cd dist/ && build --dir"
+  },
+  "devDependencies": {
+    "@types/node": "^7.0.13",
+    "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
+    "concurrently": "^3.4.0",
+    "cpx": "^1.5.0",
+    "electron": "^1.6.5",
+    "electron-builder": "^17.0.1",
+    "jasmine": "^2.5.3",
+    "rimraf": "^2.6.1",
+    "spectron": "^3.6.1",
+    "typescript": "^2.2.2"
+  },
+  "dependencies": {
+    "lodash": "^4.17.4"
+  }
+}
